@@ -11,9 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class CountDown implements Job {
-    Long prodID = <prodId>;
-    Long testID = <testId>;
-
     public long getDaysRemaining(){
         return Math.abs(ChronoUnit.DAYS.between(getTargetDay(), getToday()));
     }
@@ -38,9 +35,9 @@ public class CountDown implements Job {
         System.out.println("Dia actual: " + getToday());
         System.out.println("Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
         Bot b = new Bot();
-        b.sendText(testID,"¡¡Recordatorio!! Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
+        b.sendText("test","¡¡Recordatorio!! Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
         try {
-            b.sendRandomStickers(testID);
+            b.sendRandomStickers("test");
         } catch (TelegramApiRequestException e) {
             System.out.println("ERROR");
             System.out.println(e);
