@@ -49,13 +49,18 @@ public class CountDown implements Job {
         System.out.println(getTodayDayFormattedLog()+"-> Dia actual: " + getToday());
         System.out.println(getTodayDayFormattedLog()+"-> Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
         Bot b = new Bot();
-        b.sendText(chatID,"¡¡Recordatorio!! Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
-        try {
-            b.sendRandomStickers(chatID);
-        } catch (TelegramApiRequestException e) {
-            System.out.println(getTodayDayFormattedLog()+"-> ERROR");
-            System.out.println(getTodayDayFormattedLog()+"-> "+e);
-            throw new RuntimeException(e);
+        if (getDaysRemaining() > 0) {
+            b.sendText(chatID, "¡¡Recordatorio!! Días hasta el " + getTargetDayFormatted() + ": " + getDaysRemaining());
+            try {
+                b.sendRandomStickers(chatID);
+            } catch (TelegramApiRequestException e) {
+                System.out.println(getTodayDayFormattedLog() + "-> ERROR");
+                System.out.println(getTodayDayFormattedLog() + "-> " + e);
+                throw new RuntimeException(e);
+            }
+        } else if (getDaysRemaining() <= 0) {
+            b.sendText(chatID, "¡¡Feliz "+getTargetDayFormatted()+"!! ¡A disfrutar del calendario de adviento!");
+            System.exit(0);
         }
     }
 }
