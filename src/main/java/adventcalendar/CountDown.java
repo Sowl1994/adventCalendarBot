@@ -36,21 +36,25 @@ public class CountDown implements Job {
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return formatter.format(getTargetDay());
     }
+    public String getTodayDayFormattedLog(){
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return formatter.format(LocalDateTime.now());
+    }
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         if(environmentEnv.equals("test")) chatID = dt.get("testChatID");
         else if(environmentEnv.equals("prod")) chatID = dt.get("prodChatID");
 
-        System.out.println("Dia actual: " + getToday());
-        System.out.println("Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
+        System.out.println(getTodayDayFormattedLog()+"-> Dia actual: " + getToday());
+        System.out.println(getTodayDayFormattedLog()+"-> Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
         Bot b = new Bot();
         b.sendText(chatID,"¡¡Recordatorio!! Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
         try {
             b.sendRandomStickers(chatID);
         } catch (TelegramApiRequestException e) {
-            System.out.println("ERROR");
-            System.out.println(e);
+            System.out.println(getTodayDayFormattedLog()+"-> ERROR");
+            System.out.println(getTodayDayFormattedLog()+"-> "+e);
             throw new RuntimeException(e);
         }
     }
