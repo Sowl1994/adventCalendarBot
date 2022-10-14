@@ -1,5 +1,6 @@
 package adventcalendar;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -11,6 +12,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class CountDown implements Job {
+    Dotenv dt = Dotenv.load();
+    String environmentEnv = dt.get("environment");
+    String chatID = "";
+
+
+
     public long getDaysRemaining(){
         return Math.abs(ChronoUnit.DAYS.between(getTargetDay(), getToday()));
     }
@@ -32,12 +39,15 @@ public class CountDown implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        if(environmentEnv.equals("test")) chatID = dt.get("testChatID");
+        else if(environmentEnv.equals("prod")) chatID = dt.get("prodChatID");
+
         System.out.println("Dia actual: " + getToday());
         System.out.println("Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
         Bot b = new Bot();
-        b.sendText("test","¡¡Recordatorio!! Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
+        b.sendText(chatID,"¡¡Recordatorio!! Días hasta el "+getTargetDayFormatted()+": " + getDaysRemaining());
         try {
-            b.sendRandomStickers("test");
+            b.sendRandomStickers(chatID);
         } catch (TelegramApiRequestException e) {
             System.out.println("ERROR");
             System.out.println(e);

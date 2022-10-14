@@ -32,8 +32,6 @@ public class Bot extends TelegramLongPollingBot {
      * @param what text to be sent
      */
     public void sendText(String who, String what){
-        if (who.equals("test")) who = d.get("testChatID");
-        else if (who.equals("prod")) who = d.get("prodChatID");
         //Request to send the text
         SendMessage sm = SendMessage.builder()
                 .chatId(who)
@@ -51,8 +49,6 @@ public class Bot extends TelegramLongPollingBot {
      * @throws TelegramApiRequestException
      */
     public void sendRandomStickers(String who) throws TelegramApiRequestException {
-        if (who.equals("test")) who = d.get("testChatID");
-        else if (who.equals("prod")) who = d.get("prodChatID");
         //sticker sets arraylist
         ArrayList<String> stickerSets = new ArrayList<>();
         stickerSets.add("PotterPig");
