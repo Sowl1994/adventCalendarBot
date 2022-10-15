@@ -24,7 +24,7 @@ public class Main {
                 .build();
 
             if (environment.equals("test")) /*TEST -> Every second*/scheduleCron = "* * * * * ?";
-            else if (environment.equals("prod")) /*PROD -> 9AM & 9PM*/scheduleCron = "0 0 9,21 * * ?";
+            else if (environment.equals("prod")) /*PROD -> 9AM*/scheduleCron = "0 0 9 * * ?";
             CronTrigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity("trigger","g1")
                     .withSchedule(CronScheduleBuilder.cronSchedule(scheduleCron))
